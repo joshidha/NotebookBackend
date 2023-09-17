@@ -5,7 +5,7 @@ const User=require('../Model/User');
 const { body, validationResult } = require('express-validator');
 const bcrypt=require('bcryptjs');   // package to hash passwords 
 const jwt=require('jsonwebtoken');  // package to generate web tokens for web application
-const mysecret="Gotohell@2021";
+const mysecret=process.env.SECRET_KEY;
 const fetchuser=require('../Middleware/fetchuser');
 // Create User route
 route.post('/adduser',[
@@ -21,11 +21,6 @@ route.post('/adduser',[
         {
             return res.status(400).json({ errors: errors.array() });
         }
-
-    // console.log(req.body);
-    // const user=User(req.body);
-    // user.save();
-    // res.send(req.body);
     try{
     let user=await User.findOne({email:req.body.email});
     if(user)
@@ -40,10 +35,6 @@ route.post('/adduser',[
         password:securePassword,
         email:req.body.email
       })
-    //   .then(user => res.json(user))
-    //   .catch(err=>{console.log(err);
-    //     res.json({error:"Please enter a unique email"});
-    // })
     const data={
         user:{
             id:user.id
@@ -58,8 +49,6 @@ route.post('/adduser',[
         res.status(500).send("Something went wrong");
     }
 })
-
-// Login route .Authenticate a user using POST "api/auth/login"
 route.post('/login',[
     body('email','enter valid email').isEmail(),
     body('password','password cannot be blank').exists()
