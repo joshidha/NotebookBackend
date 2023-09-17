@@ -1,5 +1,5 @@
 const jwt=require('jsonwebtoken');
-const mysecret="Gotohell@2021";
+const mysecret=process.env.SECRET_KEY;
 const fetchuser=(req,res,next)=>{
     // Get the user from the JWT token and id to req object
     const token=req.header('auth-token');
